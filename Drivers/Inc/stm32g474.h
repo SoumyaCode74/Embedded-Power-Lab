@@ -32,10 +32,12 @@
 #define GPIOG_OFFSET                    (0x1800U)
 /*********************ADC OFFSETS********************************/
 #define ADC1_OFFSET                     (0x08000000UL)
-#define ADC2_OFFSET                     ADC1_OFFSET
-#define ADC3_OFFSET                     (0x08000400UL)
-#define ADC4_OFFSET                     ADC3_OFFSET
-#define ADC5_OFFSET                     ADC4_OFFSET
+#define ADC2_OFFSET                     (ADC1_OFFSET + 0x100U)
+#define ADC12_OFFSET                    (ADC2_OFFSET + 0x100U + 0x100U)
+#define ADC3_OFFSET                     (ADC12_OFFSET + 0x100U)
+#define ADC4_OFFSET                     (ADC3_OFFSET + 0x100U)
+#define ADC5_OFFSET                     (ADC4_OFFSET + 0x100U)
+#define ADC345_OFFSET                   (ADC5_OFFSET + 0x100U)
 /*********************DAC OFFSETS********************************/
 #define DAC1_OFFSET                     (0x08000800UL)
 #define DAC2_OFFSET                     (0x08000C00UL)
@@ -65,9 +67,11 @@
 /*********************ADC ADDRESSES*******************************/
 #define ADC1_BASE_ADDR                  AHB2_BASE_ADDR + ADC1_OFFSET
 #define ADC2_BASE_ADDR                  AHB2_BASE_ADDR + ADC2_OFFSET
+#define ADC12_BASE_ADDR                 AHB2_BASE_ADDR + ADC12_OFFSET
 #define ADC3_BASE_ADDR                  AHB2_BASE_ADDR + ADC3_OFFSET
 #define ADC4_BASE_ADDR                  AHB2_BASE_ADDR + ADC4_OFFSET
 #define ADC5_BASE_ADDR                  AHB2_BASE_ADDR + ADC5_OFFSET
+#define ADC345_BASE_ADDR                AHB2_BASE_ADDR + ADC345_OFFSET
 /*********************DAC ADDRESSES*******************************/
 #define DAC1_BASE_ADDR                  AHB2_BASE_ADDR + DAC1_OFFSET
 #define DAC2_BASE_ADDR                  AHB2_BASE_ADDR + DAC2_OFFSET
@@ -80,66 +84,134 @@
 /*****************************************************************/
 /**********************MEMORY POINTERS****************************/
 /**********************RCC POINTERS*******************************/
-#define RCC                             ((uint32_t *)RCC_BASE_ADDR)
+#define RCC                             ((RCC_TypeDef *)RCC_BASE_ADDR)
 /**********************GPIO POINTERS******************************/
-#define GPIOA                           ((uint32_t *)GPIOA_BASE_ADDR)
-#define GPIOB                           ((uint32_t *)GPIOB_BASE_ADDR)
-#define GPIOC                           ((uint32_t *)GPIOC_BASE_ADDR)
-#define GPIOD                           ((uint32_t *)GPIOD_BASE_ADDR)
-#define GPIOE                           ((uint32_t *)GPIOE_BASE_ADDR)
-#define GPIOF                           ((uint32_t *)GPIOF_BASE_ADDR)
-#define GPIOG                           ((uint32_t *)GPIOG_BASE_ADDR)
+#define GPIOA                           ((GPIO_TypeDef *)GPIOA_BASE_ADDR)
+#define GPIOB                           ((GPIO_TypeDef *)GPIOB_BASE_ADDR)
+#define GPIOC                           ((GPIO_TypeDef *)GPIOC_BASE_ADDR)
+#define GPIOD                           ((GPIO_TypeDef *)GPIOD_BASE_ADDR)
+#define GPIOE                           ((GPIO_TypeDef *)GPIOE_BASE_ADDR)
+#define GPIOF                           ((GPIO_TypeDef *)GPIOF_BASE_ADDR)
+#define GPIOG                           ((GPIO_TypeDef *)GPIOG_BASE_ADDR)
 /**********************ADC POINTERS******************************/
-#define ADC1                            ((uint32_t *)ADC1_BASE_ADDR)
-#define ADC2                            ((uint32_t *)ADC2_BASE_ADDR)
-#define ADC3                            ((uint32_t *)ADC3_BASE_ADDR)
-#define ADC4                            ((uint32_t *)ADC4_BASE_ADDR)
-#define ADC5                            ((uint32_t *)ADC5_BASE_ADDR)
+#define ADC1                            ((ADC_TypeDef *)ADC1_BASE_ADDR)
+#define ADC2                            ((ADC_TypeDef *)ADC2_BASE_ADDR)
+#define ADC3                            ((ADC_TypeDef *)ADC3_BASE_ADDR)
+#define ADC4                            ((ADC_TypeDef *)ADC4_BASE_ADDR)
+#define ADC5                            ((ADC_TypeDef *)ADC5_BASE_ADDR)
+/**********************ADC Common POINTERS***********************/
+#define ADC12                           ((ADC_Common_TypeDef *)ADC12_BASE_ADDR)
+#define ADC345                          ((ADC_Common_TypeDef *)ADC345_BASE_ADDR)
 /*********************DAC POINTERS*******************************/
-#define DAC1                            ((uint32_t *)DAC1_BASE_ADDR)
-#define DAC2                            ((uint32_t *)DAC2_BASE_ADDR)
-#define DAC3                            ((uint32_t *)DAC3_BASE_ADDR)
-#define DAC4                            ((uint32_t *)DAC4_BASE_ADDR)
+#define DAC1                            ((DAC_TypeDef *)DAC1_BASE_ADDR)
+#define DAC2                            ((DAC_TypeDef *)DAC2_BASE_ADDR)
+#define DAC3                            ((DAC_TypeDef *)DAC3_BASE_ADDR)
+#define DAC4                            ((DAC_TypeDef *)DAC4_BASE_ADDR)
 /*********************CORDIC POINTERS*****************************/
-#define CORDIC                          ((uint32_t *)CORDIC_BASE_ADDR)
+#define CORDIC                          ((CORDIC_TypeDef *)CORDIC_BASE_ADDR)
 /*********************VREFBUF POINTERS****************************/
-#define VREFBUF                         ((uint32_t *)VREFBUF_BASE_ADDR)
+#define VREFBUF                         ((VREFBUF_TypeDef *)VREFBUF_BASE_ADDR)
 /*****************************************************************/
 /*********************PERIPHERAL STRUCTURES***********************/
 /*********************RCC STRUCTURES******************************/
 typedef struct 
 {
-    uint32_t CR;
-    uint32_t ICSCR;
-    uint32_t CFGR;
-    uint32_t PLLCFGR;
-    uint32_t CIER;
-    uint32_t CIFR;
-    uint32_t CICR;
-    uint32_t AHB1RSTR;
-    uint32_t AHB2RSTR;
-    uint32_t AHB3RSTR;
-    uint32_t APB1RSTR1;
-    uint32_t APB1RSTR2;
-    uint32_t APB2RSTR;
-    uint32_t AHB1ENR;
-    uint32_t AHB2ENR;
-    uint32_t AHB3ENR;
-    uint32_t APB1ENR;
-    uint32_t APB2ENR;
-    uint32_t AHB1SMENR;
-    uint32_t AHB2SMENR;
-    uint32_t AHB3SMENR;
-    uint32_t APB1SMENR1;
-    uint32_t APB1SMENR2;
-    uint32_t APB2SMENR;
-    uint32_t CCIPR;
-    uint32_t BDCR;
-    uint32_t CSR;
-    uint32_t CRRCR;
-    uint32_t CCIPR2;
+    volatile uint32_t CR;
+    volatile uint32_t ICSCR;
+    volatile uint32_t CFGR;
+    volatile uint32_t PLLCFGR;
+    volatile uint32_t CIER;
+    volatile uint32_t CIFR;
+    volatile uint32_t CICR;
+    volatile uint32_t AHBxRSTR[3];
+    volatile uint32_t APB1RSTR[2];
+    volatile uint32_t APB2RSTR;
+    volatile uint32_t AHBxENR[3];
+    volatile uint32_t APBxENR[2];
+    volatile uint32_t AHBxSMENR[3];
+    volatile uint32_t APB1SMENR[2];
+    volatile uint32_t APB2SMENR;
+    volatile uint32_t CCIPR;
+    volatile uint32_t BDCR;
+    volatile uint32_t CSR;
+    volatile uint32_t CRRCR;
+    volatile uint32_t CCIPR2;
 }RCC_TypeDef;
-
+typedef struct 
+{
+    volatile uint32_t MODER;
+    volatile uint32_t OTYPER;
+    volatile uint32_t OSPEEDR;
+    volatile uint32_t PUPDR;
+    volatile uint32_t IDR;
+    volatile uint32_t ODR;
+    volatile uint32_t BSRR;
+    volatile uint32_t LCKR;
+    volatile uint32_t AFR[2];
+    volatile uint32_t BRR;
+}GPIO_TypeDef;
+typedef struct
+{
+    volatile uint32_t ISR;
+    volatile uint32_t IER;
+    volatile uint32_t CR;
+    volatile uint32_t CFGR[2];
+    volatile uint32_t SMPR[2];
+    volatile uint32_t TR[3];
+    volatile uint32_t SQR[4];
+    volatile uint32_t DR;
+    volatile uint32_t JSQR;
+    uint32_t reserved1[4];
+    volatile uint32_t OFR[4];
+    uint32_t reserved2[4];
+    volatile uint32_t JDR[4];
+    uint32_t reserved3[4];
+    volatile uint32_t AWD2CR;
+    volatile uint32_t AWD3CR;
+    uint32_t reserved4[2];
+    volatile uint32_t DIFSEL;
+    volatile uint32_t CALFACT;
+    volatile uint32_t GCOMP;
+}ADC_TypeDef;
+typedef struct
+{
+    volatile uint32_t CSR;
+    uint32_t reserved[1];
+    volatile uint32_t CCR;
+    volatile uint32_t CDR;
+}ADC_Common_TypeDef;
+typedef struct
+{
+    volatile uint32_t CR;
+    volatile uint32_t SWTRGR;
+    volatile uint32_t DHR12R1;
+    volatile uint32_t DHR12L1;
+    volatile uint32_t DHR8R1;
+    volatile uint32_t DHR12R2;
+    volatile uint32_t DHR12L2;
+    volatile uint32_t DHR8R2;
+    volatile uint32_t DHR12RD;
+    volatile uint32_t DHR8RD;
+    volatile uint32_t DOR[2];
+    volatile uint32_t SR;
+    volatile uint32_t CCR;
+    volatile uint32_t MCR;
+    volatile uint32_t SHSR[2];
+    volatile uint32_t SHHR[2];
+    volatile uint32_t STR[2];
+    volatile uint32_t STMODR;    
+}DAC_TypeDef;
+typedef struct
+{
+    volatile uint32_t CSR;
+    volatile uint32_t WDATA;
+    volatile uint32_t RDATA;
+}CORDIC_TypeDef;
+typedef struct
+{
+    volatile uint32_t CSR;
+    volatile uint32_t CCR;
+}VREFBUF_TypeDef;
 
 
 #endif /* STM32G474_H_ */
